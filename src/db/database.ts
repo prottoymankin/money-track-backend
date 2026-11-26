@@ -17,6 +17,18 @@ export const connectDB = async () => {
       );
     `);
 
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS transactions (
+        id SERIAL PRIMARY KEY,
+        user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        type VARCHAR(30) NOT NULL DEFAULT 'income' CHECK (type IN ('income', 'expense')),
+        amount NUMERIC(10, 2) NOT NULL CHECK (amount > 0),
+        description TEXT,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+      );
+    `);
+
     console.log("Database connected successfully.");
   } catch (error) {
     console.log("Database connection error", error);

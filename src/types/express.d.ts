@@ -7,4 +7,6 @@ declare global {
       };
     }
   }
-}
+};
+
+export {};
